@@ -26,13 +26,14 @@ def count(founded_classes,im0):
     a=f"{k} = {v}"
     model_values.append(v)
     align_bottom=align_bottom-35                                                   
-    cv2.putText(im0, str(a) ,(int(align_right),align_bottom), cv2.FONT_HERSHEY_SIMPLEX, 1,(45,255,255),1,cv2.LINE_AA)
+    cv2.putText(im0, str(a) ,(int(align_right),align_bottom), cv2.FONT_HERSHEY_SIMPLEX, 1,(0,0,255),2,cv2.LINE_AA)
   
 
  
 
 
 def detect(save_img=False):
+    total_counts = 0
     source, weights, view_img, save_txt, imgsz, trace = opt.source, opt.weights, opt.view_img, opt.save_txt, opt.img_size, not opt.no_trace
     save_img = not opt.nosave and not source.endswith('.txt')  # save inference images
     webcam = source.isnumeric() or source.endswith('.txt') or source.lower().startswith(
@@ -137,7 +138,9 @@ def detect(save_img=False):
                     founded_classes[names[class_index]]=int(n)
                     s += f"{n} {names[int(c)]}{'s' * (n > 1)}, "  # add to string
                     count(founded_classes=founded_classes,im0=im0)  # Applying counter function
-                     
+                    # return total
+                    total_counts = int(n)
+
                 # Write results
                 for *xyxy, conf, cls in reversed(det):
                     if save_txt:  # Write to file
@@ -182,7 +185,9 @@ def detect(save_img=False):
         s = f"\n{len(list(save_dir.glob('labels/*.txt')))} labels saved to {save_dir / 'labels'}" if save_txt else ''
         #print(f"Results saved to {save_dir}{s}")
 
-    print(f'Done. ({time.time() - t0:.3f}s)')
+    print(f'Done detect and count.. ({time.time() - t0:.3f}s)')
+    print(f'total_counts={total_counts}')
+    return  total_counts
 
 
 if __name__ == '__main__':
