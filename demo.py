@@ -34,7 +34,15 @@ uploaded_files = st.file_uploader("Choose a file", on_change=uploader_callback, 
 if st.button('Generate Inference'):
     st.write('Model is generating Inference...')
     # generate inferences
-    subprocess.run('python yolov7\detect_and_count.py --weights yolov7\yolov7.pt --conf 0.1 --source inference\images')
+    result = subprocess.run('python yolov7\detect_and_count.py --weights yolov7\mybest1.pt --conf 0.1 --source inference\images', stdout=subprocess.PIPE, text=True)
+    print("\n\n result.stdout -- \n\n")
+    print(result.stdout)
+    for l in result.stdout.splitlines():
+        print(type(l))
+        if 'total_counts' in l:
+            cnt = l.split('=')[1]
+            st.write('Total objects: ', cnt)
+        print(l)
 
 if st.button('View Inference'):
     st.write('Inference...')
