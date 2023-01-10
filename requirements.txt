@@ -1,0 +1,10 @@
+requests
+opencv-python
+torch
+torchvision
+tqdm
+pyyaml
+matplotlib
+seaborn
+scipy
+fastapi
